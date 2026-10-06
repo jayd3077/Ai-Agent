@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin — Grid Control</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css?v=2" />
+<style>
+  .auth-shell {
+    max-width: 380px;
+    margin: 12vh auto;
+    padding: 28px;
+  }
+  .auth-shell h1 { font-family: var(--font-display); font-size: 20px; margin-bottom: 4px; }
+  .auth-shell p { color: var(--muted); font-size: 13px; margin-top: 0; }
+  .field { margin: 14px 0; }
+  .field label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 5px; }
+  .field input {
+    width: 100%; background: var(--panel-raised); border: 1px solid var(--border);
+    border-radius: 6px; padding: 9px 10px; color: var(--text); font-family: var(--font-body);
+  }
+  .field input:focus { outline: 1px solid var(--teal); }
+  .auth-shell button {
+    width: 100%; background: var(--teal); border: none; color: #06211D;
+    font-weight: 600; padding: 10px; border-radius: 6px; cursor: pointer; margin-top: 6px;
+  }
+  .error-msg { color: var(--coral); font-size: 12.5px; margin-top: 8px; min-height: 16px; }
+  .admin-layout { max-width: 900px; margin: 0 auto; padding: 24px 28px 60px; display: flex; flex-direction: column; gap: 18px; }
+  .rule-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: var(--panel-raised); border-radius: 6px; font-size: 13px; margin-bottom: 6px; }
+  .rule-row button, .warn-actions button {
+    background: transparent; border: 1px solid var(--border); color: var(--muted);
+    padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 12px;
+  }
+  .rule-row button:hover { border-color: var(--coral); color: var(--coral); }
+  .warn-card { border: 1px solid var(--amber); background: rgba(245,166,35,0.08); border-radius: 8px; padding: 12px 14px; margin-bottom: 10px; }
+  .warn-card .warn-reason { font-size: 13px; margin-bottom: 8px; }
+  .warn-card pre { font-family: var(--font-mono); font-size: 11px; color: var(--muted); background: var(--panel-raised); padding: 8px; border-radius: 6px; overflow-x: auto; }
+  .warn-actions { display: flex; gap: 8px; }
+  .warn-actions .approve:hover { border-color: var(--green); color: var(--green); }
+  .warn-actions .deny:hover { border-color: var(--coral); color: var(--coral); }
+  .add-rule-row { display: flex; gap: 8px; margin-top: 10px; }
+  .add-rule-row input { flex: 1; background: var(--panel-raised); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; color: var(--text); }
+  .add-rule-row button { background: var(--teal); border: none; color: #06211D; font-weight: 600; padding: 8px 14px; border-radius: 6px; cursor: pointer; }
+  .topbar .brand-text small { color: var(--violet); }
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">◆</span>
+      <div class="brand-text"><h1>Grid Control</h1><p>Admin console</p></div>
+    </div>
+    <div class="topbar-right"><a href="/">← Back to dashboard</a></div>
+  </header>
+
+  <div id="checkingView" class="auth-shell panel">
+    <p class="hint">Checking session…</p>
+  </div>
+
+  <div id="loginView" class="auth-shell panel" hidden>
+    <h1>Admin sign-in</h1>
+    <p>Restricted to authorized operators. High-criticality actions and guardrail rules live here.</p>
+    <div class="field">
+      <label for="username">User ID</label>
+      <input id="username" type="text" autocomplete="username" />
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input id="password" type="password" autocomplete="current-password" />
+    </div>
+    <button id="loginBtn">Sign in</button>
+    <div class="error-msg" id="loginError"></div>
+  </div>
+
+  <div id="adminView" class="admin-layout" hidden>
+    <div class="panel">
+      <div class="panel-head">
+        <h2>⚠ Warnings needing a decision</h2>
+      </div>
+      <div id="warningsList"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Guardrail "don't" rules</h2>
+      <p class="hint">Hard rules the agent must never violate on its own (e.g. "never shut down eu-west").</p>
+      <div id="rulesList"></div>
+      <div class="add-rule-row">
+        <input id="newRule" type="text" placeholder="Add a new rule…" />
+        <button id="addRuleBtn">Add</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/admin.js?v=2"></script>
+</body>
+</html>

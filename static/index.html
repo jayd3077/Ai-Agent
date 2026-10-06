@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Grid Control — Datacenter Agent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css?v=2"/>
+</head>
+<body>
+
+<!-- ═══════════════════════ TOPBAR ═══════════════════════ -->
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-icon">
+      <div class="brand-icon-inner"></div>
+    </div>
+    <div>
+      <div class="brand-name">Grid Control</div>
+      <div class="brand-sub">Autonomous Datacenter Orchestration</div>
+    </div>
+  </div>
+
+  <div class="global-stats" id="globalStats">
+    <div class="stat-pill">
+      <span class="stat-label">Active Tasks</span>
+      <span class="stat-val" id="gTasks">—</span>
+    </div>
+    <div class="stat-pill">
+      <span class="stat-label">Avg Temp</span>
+      <span class="stat-val" id="gTemp">—</span>
+    </div>
+    <div class="stat-pill">
+      <span class="stat-label">Cheapest Region</span>
+      <span class="stat-val" id="gCheap">—</span>
+    </div>
+    <div class="stat-pill">
+      <span class="stat-label">Greenest Region</span>
+      <span class="stat-val" id="gGreen">—</span>
+    </div>
+  </div>
+
+  <div class="topbar-right">
+    <div class="decision-timer" id="decisionTimer" title="Seconds until next agent decision">
+      <svg class="timer-svg" viewBox="0 0 44 44">
+        <circle cx="22" cy="22" r="18" class="timer-track"/>
+        <circle cx="22" cy="22" r="18" class="timer-arc" id="timerArc"/>
+      </svg>
+      <div class="timer-inner">
+        <span class="timer-num" id="timerNum">5</span>
+        <span class="timer-lbl">next</span>
+      </div>
+    </div>
+    <div class="live-badge">
+      <span class="live-dot" id="liveDot"></span>
+      LIVE
+    </div>
+    <span class="sim-clock mono" id="simClock">—</span>
+    <a class="admin-btn" href="/admin">Admin →</a>
+  </div>
+</header>
+
+<!-- ═══════════════════════ WARNING BANNER ═══════════════════════ -->
+<div class="warn-banner" id="warnBanner" hidden>
+  <span>⚠ Admin action required —</span>
+  <span id="warnCount"></span>
+  <a href="/admin">Review in Admin →</a>
+</div>
+
+<!-- ═══════════════════════ MAIN LAYOUT ═══════════════════════ -->
+<div class="page-layout">
+
+  <!-- LEFT: regions -->
+  <div class="regions-col">
+    <div class="col-header">
+      <span>DATACENTER REGIONS</span>
+      <div class="legend">
+        <span class="leg-item"><i class="chip-dot" style="background:#10B981"></i> Idle</span>
+        <span class="leg-item"><i class="chip-dot" style="background:#3B82F6"></i> Active</span>
+        <span class="leg-item"><i class="chip-dot" style="background:#F59E0B"></i> Busy (&gt;60%)</span>
+        <span class="leg-item"><i class="chip-dot" style="background:#EF4444"></i> Hot (&gt;68°C)</span>
+      </div>
+    </div>
+    <div class="regions-list" id="regionsList"></div>
+  </div>
+
+  <!-- RIGHT: sidebar -->
+  <aside class="sidebar-col">
+
+    <!-- Agent decisions -->
+    <div class="panel">
+      <div class="panel-title">
+        <span class="panel-icon">🤖</span>
+        Agent Decisions
+        <span class="panel-badge" id="agentBadge" hidden></span>
+      </div>
+      <div class="log-list" id="logList">
+        <div class="log-empty">Waiting for first decision cycle…</div>
+      </div>
+    </div>
+
+    <!-- Ask the agent -->
+    <div class="panel">
+      <div class="panel-title"><span class="panel-icon">💬</span> Ask the Agent</div>
+      <p class="panel-hint">Scoped strictly to this project — off-topic questions are rejected before any model call.</p>
+      <div class="ask-row">
+        <input id="askInput" type="text" placeholder="Why did the agent move that task?"/>
+        <button id="askBtn">Ask</button>
+      </div>
+      <div id="askAnswer" class="ask-answer"></div>
+    </div>
+
+    <!-- Feedback -->
+    <div class="panel">
+      <div class="panel-title"><span class="panel-icon">📈</span> Feedback Loop</div>
+      <div class="feedback-list" id="feedbackList">
+        <div class="log-empty">Outcomes appear ~30s after actions.</div>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<script src="/static/app.js?v=2"></script>
+</body>
+</html>
